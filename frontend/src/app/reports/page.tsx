@@ -83,7 +83,7 @@ export default function ReportsPage() {
     { title: 'Inventory Turnover', value: kpis.inventory_turnover.toString(), desc: 'Inventory turnover cycle', icon: BarChart2, color: 'text-blue-600' },
     { title: 'On-Time Delivery', value: `${kpis.delivery_on_time}%`, desc: 'Percentage of on-time orders', icon: RefreshCw, color: 'text-purple-600' },
     { title: 'Stockout Reduction', value: `${kpis.stockout_reduction}%`, desc: 'Stockout risk reduction', icon: ShieldAlert, color: 'text-orange-600' },
-    { title: 'Cost Savings', value: kpis.cost_savings.toLocaleString(), desc: 'Total savings (Rials)', icon: TrendingUp, color: 'text-indigo-600' },
+    { title: 'Cost Savings', value: `$${kpis.cost_savings.toLocaleString()}`, desc: 'Total savings (USD)', icon: TrendingUp, color: 'text-indigo-600' },
     { title: 'Critical Alerts', value: kpis.alerts_critical.toString(), desc: 'Number of urgent alerts', icon: Bell, color: 'text-red-600' },
   ] : []
 

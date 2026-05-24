@@ -224,7 +224,7 @@ export default function RoutesPage() {
                   </div>
                   <div className="flex items-center">
                     <DollarSign className="h-4 w-4 text-purple-600 ml-2" />
-                    <span>Cost: {routePlan.total_cost_usd.toFixed(0)} Toman</span>
+                    <span>Cost: ${routePlan.total_cost_usd.toFixed(0)}</span>
                   </div>
                   <div className="flex items-center">
                     <Truck className="h-4 w-4 text-orange-600 ml-2" />

@@ -198,7 +198,7 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-green-600 mb-2">
-              {metrics.cost_savings.toLocaleString()} Toman
+              ${metrics.cost_savings.toLocaleString()}
             </div>
             <div className="text-sm text-gray-600">
               Compared to traditional methods
