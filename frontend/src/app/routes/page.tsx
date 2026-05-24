@@ -89,8 +89,9 @@ export default function RoutesPage() {
     }
   }
 
+  // Seeded branch IDs (see scripts/seed_synthetic.py).
   const branches = [
-    'MAIN_BRANCH', 'NORTH_BRANCH', 'SOUTH_BRANCH', 'EAST_BRANCH', 'WEST_BRANCH'
+    'BR-TEHRAN-01', 'BR-TABRIZ-01', 'BR-MASHHAD-01', 'BR-ISFAHAN-01', 'BR-SHIRAZ-01'
   ]
 
   return (

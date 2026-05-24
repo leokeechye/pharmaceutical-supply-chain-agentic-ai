@@ -232,6 +232,55 @@ async def match_inventory(request: InventoryMatchingRequest):
         logger.error(f"Error in inventory matching endpoint: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/api/v1/inventory/status")
+async def get_inventory_status():
+    """
+    List current inventory across all drugs and branches.
+
+    Powers the Inventory Management dashboard. Reads every inventory document
+    from MongoDB and tags each with a derived status:
+      critical  current_stock < 50% of safety stock
+      low       current_stock < safety stock
+      high      current_stock > 120% of optimal stock
+      normal    otherwise
+    """
+    try:
+        from utils.database import get_database
+
+        db = get_database()
+        items = []
+        for doc in db.inventory.find({}, {"_id": 0}):
+            current = doc.get("current_stock", 0) or 0
+            optimal = doc.get("optimal_stock", 0) or 0
+            safe = doc.get("safe_stock", 0) or 0
+
+            if safe and current < safe * 0.5:
+                status = "critical"
+            elif safe and current < safe:
+                status = "low"
+            elif optimal and current > optimal * 1.2:
+                status = "high"
+            else:
+                status = "normal"
+
+            items.append({
+                "drug_id": doc.get("drug_id"),
+                "drug_name": doc.get("drug_name", doc.get("drug_id")),
+                "branch_id": doc.get("branch_id", "UNKNOWN"),
+                "current_stock": current,
+                "optimal_stock": optimal,
+                "safe_stock": safe,
+                "demand_forecast": doc.get("demand_forecast", 0),
+                "status": status,
+            })
+
+        items.sort(key=lambda x: (x["branch_id"], x["drug_name"]))
+        return {"items": items, "total_items": len(items)}
+
+    except Exception as e:
+        logger.error(f"Error in inventory status endpoint: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 @app.get("/api/v1/alerts", response_model=AlertResponse)
 async def get_alerts(severity: Optional[str] = None, limit: int = 10):
     """

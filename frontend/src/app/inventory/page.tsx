@@ -38,62 +38,13 @@ export default function InventoryPage() {
   const loadInventory = async () => {
     setIsLoading(true)
     try {
-      // Mock data for demonstration
-      const mockInventory: InventoryItem[] = [
-        {
-          drug_id: 'MET001',
-          drug_name: 'Metformin',
-          branch_id: 'MAIN_BRANCH',
-          current_stock: 450,
-          optimal_stock: 500,
-          safe_stock: 100,
-          demand_forecast: 120,
-          status: 'normal'
-        },
-        {
-          drug_id: 'ASP001',
-          drug_name: 'Aspirin',
-          branch_id: 'MAIN_BRANCH',
-          current_stock: 45,
-          optimal_stock: 200,
-          safe_stock: 40,
-          demand_forecast: 80,
-          status: 'critical'
-        },
-        {
-          drug_id: 'INS001',
-          drug_name: 'Insulin',
-          branch_id: 'NORTH_BRANCH',
-          current_stock: 320,
-          optimal_stock: 300,
-          safe_stock: 60,
-          demand_forecast: 95,
-          status: 'high'
-        },
-        {
-          drug_id: 'AMX001',
-          drug_name: 'Amoxicillin',
-          branch_id: 'SOUTH_BRANCH',
-          current_stock: 180,
-          optimal_stock: 250,
-          safe_stock: 50,
-          demand_forecast: 110,
-          status: 'low'
-        },
-        {
-          drug_id: 'OME001',
-          drug_name: 'Omeprazole',
-          branch_id: 'EAST_BRANCH',
-          current_stock: 275,
-          optimal_stock: 300,
-          safe_stock: 60,
-          demand_forecast: 85,
-          status: 'normal'
-        }
-      ]
-      setInventory(mockInventory)
+      const response = await fetch('/api/v1/inventory/status')
+      if (!response.ok) throw new Error(`HTTP ${response.status}`)
+      const data = await response.json()
+      setInventory(data.items ?? [])
     } catch (error) {
       console.error('Failed to load inventory:', error)
+      setInventory([])
     } finally {
       setIsLoading(false)
     }
