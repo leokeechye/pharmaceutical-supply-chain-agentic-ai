@@ -27,18 +27,10 @@ interface RoutePlan {
 export default function RoutesPage() {
   const [depotId, setDepotId] = useState('')
   const [destinations, setDestinations] = useState<string[]>([])
-  const [newDestination, setNewDestination] = useState('')
   const [vehicleCapacity, setVehicleCapacity] = useState(500)
   const [maxTimeHours, setMaxTimeHours] = useState(8)
   const [routePlan, setRoutePlan] = useState<RoutePlan | null>(null)
   const [isLoading, setIsLoading] = useState(false)
-
-  const addDestination = () => {
-    if (newDestination && !destinations.includes(newDestination)) {
-      setDestinations([...destinations, newDestination])
-      setNewDestination('')
-    }
-  }
 
   const removeDestination = (dest: string) => {
     setDestinations(destinations.filter(d => d !== dest))
@@ -134,15 +126,24 @@ export default function RoutesPage() {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Delivery Destinations
               </label>
-              <div className="flex space-x-2 mb-2">
-                <Input
-                  type="text"
-                  placeholder="Destination branch name..."
-                  value={newDestination}
-                  onChange={(e) => setNewDestination(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && addDestination()}
-                />
-                <Button onClick={addDestination}>Add</Button>
+              <div className="mb-2">
+                <Select
+                  value=""
+                  onValueChange={(val) => {
+                    if (val) setDestinations(prev => prev.includes(val) ? prev : [...prev, val])
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Add a destination branch..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {branches
+                      .filter(b => b !== depotId && !destinations.includes(b))
+                      .map(branch => (
+                        <SelectItem key={branch} value={branch}>{branch}</SelectItem>
+                      ))}
+                  </SelectContent>
+                </Select>
               </div>
               <div className="flex flex-wrap gap-2">
                 {destinations.map(dest => (
