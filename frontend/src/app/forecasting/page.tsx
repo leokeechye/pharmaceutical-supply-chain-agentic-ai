@@ -69,9 +69,20 @@ export default function ForecastingPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
+  // drug_id values match the seeded catalog (lowercased name with underscores).
   const drugs = [
-    'Metformin', 'Aspirin', 'Insulin', 'Amoxicillin', 'Omeprazole',
-    'Losartan', 'Simvastatin', 'Albuterol', 'Warfarin', 'Furosemide'
+    { id: 'amoxicillin_500mg', name: 'Amoxicillin 500mg' },
+    { id: 'metformin_850mg', name: 'Metformin 850mg' },
+    { id: 'atorvastatin_20mg', name: 'Atorvastatin 20mg' },
+    { id: 'amlodipine_5mg', name: 'Amlodipine 5mg' },
+    { id: 'omeprazole_20mg', name: 'Omeprazole 20mg' },
+    { id: 'salbutamol_inhaler', name: 'Salbutamol Inhaler' },
+    { id: 'paracetamol_500mg', name: 'Paracetamol 500mg' },
+    { id: 'ibuprofen_400mg', name: 'Ibuprofen 400mg' },
+    { id: 'losartan_50mg', name: 'Losartan 50mg' },
+    { id: 'insulin_glargine', name: 'Insulin Glargine' },
+    { id: 'ciprofloxacin_500mg', name: 'Ciprofloxacin 500mg' },
+    { id: 'levothyroxine_100mcg', name: 'Levothyroxine 100mcg' },
   ]
 
   const normalizeForecast = (data: ForecastApiResponse): ForecastData => ({
@@ -113,8 +124,8 @@ export default function ForecastingPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          entity_type: 'branch',
-          entity_id: 'MAIN_BRANCH',
+          entity_type: 'network',
+          entity_id: 'ALL',
           item_id: selectedDrug,
           horizon_days: horizonDays,
           model: model
@@ -176,7 +187,7 @@ export default function ForecastingPage() {
                 </SelectTrigger>
                 <SelectContent>
                   {drugs.map(drug => (
-                    <SelectItem key={drug} value={drug}>{drug}</SelectItem>
+                    <SelectItem key={drug.id} value={drug.id}>{drug.name}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
