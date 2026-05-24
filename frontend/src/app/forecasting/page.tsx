@@ -99,7 +99,7 @@ export default function ForecastingPage() {
 
   const runForecast = async () => {
     if (!selectedDrug) {
-      setError('لطفاً یک دارو انتخاب کنید')
+      setError('Please select a drug')
       return
     }
 
@@ -122,7 +122,7 @@ export default function ForecastingPage() {
       })
 
       if (!response.ok) {
-        setError('خطا در دریافت پیش‌بینی')
+        setError('Error retrieving forecast')
         setForecastData(null)
         return
       }
@@ -131,7 +131,7 @@ export default function ForecastingPage() {
       const normalized = normalizeForecast(apiData)
 
       if (normalized.status !== 'success' || !normalized.forecast.length) {
-        setError(apiData.message || 'پیش‌بینی معتبری برنگشت')
+        setError(apiData.message || 'No valid forecast returned')
         setForecastData(null)
         return
       }
@@ -139,7 +139,7 @@ export default function ForecastingPage() {
       setForecastData(normalized)
     } catch (err) {
       console.error('Forecast error:', err)
-      setError('خطا در اتصال به سرور')
+      setError('Error connecting to server')
       setForecastData(null)
     } finally {
       setIsLoading(false)
@@ -151,28 +151,28 @@ export default function ForecastingPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">پیش‌بینی تقاضای دارویی</h1>
-          <p className="text-gray-600 mt-1">استفاده از مدل‌های هوش مصنوعی برای پیش‌بینی نیاز بازار</p>
+          <h1 className="text-3xl font-bold text-gray-900">Pharmaceutical Demand Forecasting</h1>
+          <p className="text-gray-600 mt-1">Using AI models to forecast market demand</p>
         </div>
       </div>
 
       {/* Controls */}
       <Card>
         <CardHeader>
-          <CardTitle>پارامترهای پیش‌بینی</CardTitle>
+          <CardTitle>Forecast Parameters</CardTitle>
           <CardDescription>
-            انتخاب دارو و تنظیمات مدل پیش‌بینی
+            Select a drug and configure the forecast model
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                انتخاب دارو
+                Select Drug
               </label>
               <Select value={selectedDrug} onValueChange={setSelectedDrug}>
                 <SelectTrigger>
-                  <SelectValue placeholder="انتخاب دارو..." />
+                  <SelectValue placeholder="Select a drug..." />
                 </SelectTrigger>
                 <SelectContent>
                   {drugs.map(drug => (
@@ -184,25 +184,25 @@ export default function ForecastingPage() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                افق زمانی (روز)
+                Forecast Horizon (Days)
               </label>
               <Select value={horizonDays.toString()} onValueChange={(value) => setHorizonDays(parseInt(value))}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="7">7 روز</SelectItem>
-                  <SelectItem value="14">14 روز</SelectItem>
-                  <SelectItem value="30">30 روز</SelectItem>
-                  <SelectItem value="60">60 روز</SelectItem>
-                  <SelectItem value="90">90 روز</SelectItem>
+                  <SelectItem value="7">7 days</SelectItem>
+                  <SelectItem value="14">14 days</SelectItem>
+                  <SelectItem value="30">30 days</SelectItem>
+                  <SelectItem value="60">60 days</SelectItem>
+                  <SelectItem value="90">90 days</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                مدل پیش‌بینی
+                Forecast Model
               </label>
               <Select value={model} onValueChange={setModel}>
                 <SelectTrigger>
@@ -211,7 +211,7 @@ export default function ForecastingPage() {
                 <SelectContent>
                   <SelectItem value="prophet">Prophet</SelectItem>
                   <SelectItem value="lstm">LSTM</SelectItem>
-                  <SelectItem value="moving_average">میانگین متحرک</SelectItem>
+                  <SelectItem value="moving_average">Moving Average</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -225,12 +225,12 @@ export default function ForecastingPage() {
                 {isLoading ? (
                   <>
                     <RefreshCw className="h-4 w-4 ml-2 animate-spin" />
-                    در حال پیش‌بینی...
+                    Forecasting...
                   </>
                 ) : (
                   <>
                     <TrendingUp className="h-4 w-4 ml-2" />
-                    اجرای پیش‌بینی
+                    Run Forecast
                   </>
                 )}
               </Button>
@@ -255,7 +255,7 @@ export default function ForecastingPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">دقت مدل (MAPE)</CardTitle>
+                <CardTitle className="text-sm font-medium">Model Accuracy (MAPE)</CardTitle>
                 <Target className="h-4 w-4 text-blue-600" />
               </CardHeader>
               <CardContent>
@@ -263,7 +263,7 @@ export default function ForecastingPage() {
                   {formatMetric(forecastData.metrics.mape, '%')}
                 </div>
                 <p className="text-xs text-gray-500 mt-1">
-                  خطای میانگین درصد
+                  Mean Absolute Percentage Error
                 </p>
               </CardContent>
             </Card>
@@ -278,7 +278,7 @@ export default function ForecastingPage() {
                   {formatMetric(forecastData.metrics.rmse)}
                 </div>
                 <p className="text-xs text-gray-500 mt-1">
-                  ریشه خطای مربع میانگین
+                  Root Mean Square Error
                 </p>
               </CardContent>
             </Card>
@@ -293,7 +293,7 @@ export default function ForecastingPage() {
                   {formatMetric(forecastData.metrics.mae)}
                 </div>
                 <p className="text-xs text-gray-500 mt-1">
-                  خطای مطلق میانگین
+                  Mean Absolute Error
                 </p>
               </CardContent>
             </Card>
@@ -302,11 +302,11 @@ export default function ForecastingPage() {
           {/* Forecast Chart */}
           <Card>
             <CardHeader>
-              <CardTitle>نمودار پیش‌بینی تقاضا</CardTitle>
+              <CardTitle>Demand Forecast Chart</CardTitle>
               <CardDescription>
-                پیش‌بینی تقاضا برای {selectedDrug} به مدت {horizonDays} روز آینده
+                Demand forecast for {selectedDrug} over the next {horizonDays} days
                 <Badge variant="outline" className="mr-2">
-                  مدل: {forecastData.model}
+                  Model: {forecastData.model}
                 </Badge>
               </CardDescription>
             </CardHeader>
@@ -318,12 +318,12 @@ export default function ForecastingPage() {
                     <XAxis
                       dataKey="date"
                       tick={{ fontSize: 12 }}
-                      tickFormatter={(value) => new Date(value).toLocaleDateString('fa-IR')}
+                      tickFormatter={(value) => new Date(value).toLocaleDateString('en-US')}
                     />
                     <YAxis tick={{ fontSize: 12 }} />
                     <Tooltip
-                      labelFormatter={(value) => new Date(value).toLocaleDateString('fa-IR')}
-                      formatter={(value) => [value?.toLocaleString() || '0', 'مقدار پیش‌بینی']}
+                      labelFormatter={(value) => new Date(value).toLocaleDateString('en-US')}
+                      formatter={(value) => [value?.toLocaleString() || '0', 'Predicted Value']}
                     />
                     <Line
                       type="monotone"
@@ -357,9 +357,9 @@ export default function ForecastingPage() {
           {/* Forecast Table */}
           <Card>
             <CardHeader>
-              <CardTitle>جدول پیش‌بینی</CardTitle>
+              <CardTitle>Forecast Table</CardTitle>
               <CardDescription>
-                جزئیات پیش‌بینی روزانه
+                Daily forecast details
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -367,17 +367,17 @@ export default function ForecastingPage() {
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        تاریخ
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Date
                       </th>
-                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        پیش‌بینی
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Forecast
                       </th>
-                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        حداقل
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Lower Bound
                       </th>
-                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        حداکثر
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Upper Bound
                       </th>
                     </tr>
                   </thead>
@@ -385,7 +385,7 @@ export default function ForecastingPage() {
                     {forecastData.forecast.slice(0, 10).map((item, index) => (
                       <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {new Date(item.date).toLocaleDateString('fa-IR')}
+                          {new Date(item.date).toLocaleDateString('en-US')}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-600 font-medium">
                           {item.predicted.toLocaleString()}

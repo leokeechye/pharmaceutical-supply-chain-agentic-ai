@@ -107,15 +107,15 @@ export default function InventoryPage() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'critical':
-        return <Badge variant="destructive">بحرانی</Badge>
+        return <Badge variant="destructive">Critical</Badge>
       case 'low':
-        return <Badge className="bg-orange-100 text-orange-800">کم</Badge>
+        return <Badge className="bg-orange-100 text-orange-800">Low</Badge>
       case 'high':
-        return <Badge className="bg-blue-100 text-blue-800">زیاد</Badge>
+        return <Badge className="bg-blue-100 text-blue-800">High</Badge>
       case 'normal':
-        return <Badge variant="secondary">نرمال</Badge>
+        return <Badge variant="secondary">Normal</Badge>
       default:
-        return <Badge variant="outline">نامشخص</Badge>
+        return <Badge variant="outline">Unknown</Badge>
     }
   }
 
@@ -127,7 +127,7 @@ export default function InventoryPage() {
     return (
       <div className="flex items-center justify-center h-64">
         <RefreshCw className="h-8 w-8 animate-spin text-blue-600" />
-        <span className="mr-2 text-gray-600">در حال بارگذاری موجودی...</span>
+        <span className="mr-2 text-gray-600">Loading inventory...</span>
       </div>
     )
   }
@@ -137,12 +137,12 @@ export default function InventoryPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">مدیریت موجودی</h1>
-          <p className="text-gray-600 mt-1">پایش و مدیریت موجودی داروها در شعب مختلف</p>
+          <h1 className="text-3xl font-bold text-gray-900">Inventory Management</h1>
+          <p className="text-gray-600 mt-1">Monitor and manage drug inventory across branches</p>
         </div>
         <Button onClick={loadInventory}>
           <RefreshCw className="h-4 w-4 ml-2" />
-          بروزرسانی
+          Refresh
         </Button>
       </div>
 
@@ -153,7 +153,7 @@ export default function InventoryPage() {
             <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
             <Input
               type="text"
-              placeholder="جستجو بر اساس نام دارو یا شعبه..."
+              placeholder="Search by drug name or branch..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-4 pr-10"
@@ -178,8 +178,8 @@ export default function InventoryPage() {
                 {/* Stock Level */}
                 <div>
                   <div className="flex justify-between text-sm mb-1">
-                    <span>موجودی فعلی</span>
-                    <span className="font-medium">{item.current_stock} واحد</span>
+                    <span>Current Stock</span>
+                    <span className="font-medium">{item.current_stock} units</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div
@@ -196,26 +196,26 @@ export default function InventoryPage() {
                 {/* Details */}
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <span className="text-gray-600">بهینه:</span>
+                    <span className="text-gray-600">Optimal:</span>
                     <span className="font-medium mr-2">{item.optimal_stock}</span>
                   </div>
                   <div>
-                    <span className="text-gray-600">ایمن:</span>
+                    <span className="text-gray-600">Safe:</span>
                     <span className="font-medium mr-2">{item.safe_stock}</span>
                   </div>
                   <div>
-                    <span className="text-gray-600">پیش‌بینی:</span>
-                    <span className="font-medium mr-2">{item.demand_forecast}/ماه</span>
+                    <span className="text-gray-600">Forecast:</span>
+                    <span className="font-medium mr-2">{item.demand_forecast}/month</span>
                   </div>
                   <div>
-                    <span className="text-gray-600">درصد:</span>
+                    <span className="text-gray-600">Percentage:</span>
                     <span className="font-medium mr-2">{getStockPercentage(item.current_stock, item.optimal_stock)}%</span>
                   </div>
                 </div>
 
                 {/* Status Indicators */}
                 <div className="flex items-center justify-between pt-2 border-t">
-                  <div className="flex items-center space-x-2 space-x-reverse">
+                  <div className="flex items-center space-x-2">
                     {item.current_stock < item.safe_stock ? (
                       <AlertTriangle className="h-4 w-4 text-red-500" />
                     ) : item.current_stock > item.optimal_stock * 1.2 ? (
@@ -224,12 +224,12 @@ export default function InventoryPage() {
                       <CheckCircle className="h-4 w-4 text-green-500" />
                     )}
                     <span className="text-sm text-gray-600">
-                      {item.current_stock < item.safe_stock ? 'نیاز به سفارش' :
-                       item.current_stock > item.optimal_stock * 1.2 ? 'موجودی اضافی' : 'وضعیت مناسب'}
+                      {item.current_stock < item.safe_stock ? 'Reorder needed' :
+                       item.current_stock > item.optimal_stock * 1.2 ? 'Overstock' : 'Healthy level'}
                     </span>
                   </div>
                   <Button size="sm" variant="outline">
-                    جزئیات
+                    Details
                   </Button>
                 </div>
               </div>
@@ -242,7 +242,7 @@ export default function InventoryPage() {
         <Card>
           <CardContent className="pt-6">
             <div className="text-center py-8 text-gray-500">
-              هیچ آیتمی یافت نشد
+              No items found
             </div>
           </CardContent>
         </Card>
@@ -256,7 +256,7 @@ export default function InventoryPage() {
               <Package className="h-8 w-8 text-blue-600 ml-3" />
               <div>
                 <p className="text-2xl font-bold text-gray-900">{inventory.length}</p>
-                <p className="text-sm text-gray-600">کل آیتم‌ها</p>
+                <p className="text-sm text-gray-600">Total Items</p>
               </div>
             </div>
           </CardContent>
@@ -270,7 +270,7 @@ export default function InventoryPage() {
                 <p className="text-2xl font-bold text-gray-900">
                   {inventory.filter(i => i.status === 'critical').length}
                 </p>
-                <p className="text-sm text-gray-600">موارد بحرانی</p>
+                <p className="text-sm text-gray-600">Critical Items</p>
               </div>
             </div>
           </CardContent>
@@ -284,7 +284,7 @@ export default function InventoryPage() {
                 <p className="text-2xl font-bold text-gray-900">
                   {inventory.filter(i => i.status === 'low').length}
                 </p>
-                <p className="text-sm text-gray-600">موجودی کم</p>
+                <p className="text-sm text-gray-600">Low Stock</p>
               </div>
             </div>
           </CardContent>
@@ -298,7 +298,7 @@ export default function InventoryPage() {
                 <p className="text-2xl font-bold text-gray-900">
                   {inventory.filter(i => i.status === 'normal').length}
                 </p>
-                <p className="text-sm text-gray-600">وضعیت مناسب</p>
+                <p className="text-sm text-gray-600">Healthy Level</p>
               </div>
             </div>
           </CardContent>

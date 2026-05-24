@@ -80,7 +80,7 @@ export default function AlertsPage() {
           warning_count: data.warning_count || 0,
           info_count: data.info_count || 0
         })
-        setAiInsights(data.ai_insights || 'تحلیل هوشمند در دسترس نیست')
+        setAiInsights(data.ai_insights || 'AI analysis not available')
       } else {
         // Mock data for demonstration
         const mockAlerts: Alert[] = [
@@ -91,7 +91,7 @@ export default function AlertsPage() {
             alert_type: 'STOCKOUT_RISK',
             current_stock: 45,
             days_until_stockout: 1.5,
-            message: 'کمبود موجودی اورژانسی: ۱.۵ روز موجودی باقی مانده',
+            message: 'Emergency low stock: 1.5 days of inventory remaining',
             recommended_action: 'URGENT_ORDER',
             timestamp: new Date(Date.now() - 10 * 60 * 1000).toISOString(),
             is_resolved: false
@@ -103,7 +103,7 @@ export default function AlertsPage() {
             alert_type: 'LOW_STOCK',
             current_stock: 120,
             days_until_stockout: 5.2,
-            message: 'موجودی کم: ۵.۲ روز موجودی باقی مانده',
+            message: 'Low stock: 5.2 days of inventory remaining',
             recommended_action: 'ORDER_SOON',
             timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
             is_resolved: false
@@ -113,7 +113,7 @@ export default function AlertsPage() {
             branch_id: 'SYSTEM',
             item_id: 'AI_MODEL',
             alert_type: 'FORECAST_COMPLETED',
-            message: 'پیش‌بینی تقاضای ماه آینده برای ۵۰ دارو تکمیل شد',
+            message: 'Next month demand forecast completed for 50 drugs',
             recommended_action: 'REVIEW_RESULTS',
             timestamp: new Date(Date.now() - 60 * 60 * 1000).toISOString(),
             is_resolved: false
@@ -125,7 +125,7 @@ export default function AlertsPage() {
             alert_type: 'STOCKOUT_RISK',
             current_stock: 25,
             days_until_stockout: 0.8,
-            message: 'کمبود موجودی اورژانسی: کمتر از ۱ روز موجودی باقی مانده',
+            message: 'Emergency low stock: less than 1 day of inventory remaining',
             recommended_action: 'URGENT_ORDER',
             timestamp: new Date(Date.now() - 45 * 60 * 1000).toISOString(),
             is_resolved: false
@@ -136,7 +136,7 @@ export default function AlertsPage() {
             item_id: 'Amoxicillin',
             alert_type: 'OVERSTOCK',
             current_stock: 850,
-            message: 'موجودی اضافی: ۳۵۰ واحد بیش از حد بهینه',
+            message: 'Overstock: 350 units above optimal level',
             recommended_action: 'REDISTRIBUTE',
             timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
             is_resolved: false
@@ -149,11 +149,11 @@ export default function AlertsPage() {
           warning_count: mockAlerts.filter(a => a.severity === 'WARNING').length,
           info_count: mockAlerts.filter(a => a.severity === 'INFO').length
         })
-        setAiInsights('تحلیل هوشمند در دسترس نیست')
+        setAiInsights('AI analysis not available')
       }
     } catch (error) {
       console.error('Failed to load alerts:', error)
-      setAiInsights('تحلیل هوشمند در دسترس نیست')
+      setAiInsights('AI analysis not available')
       // Keep mock data
     } finally {
       setIsLoading(false)
@@ -215,23 +215,23 @@ export default function AlertsPage() {
   }
 
   const chartData = [
-    { name: 'بحرانی', value: summary.critical_count, color: '#ef4444' },
-    { name: 'هشدار', value: summary.warning_count, color: '#f97316' },
-    { name: 'اطلاعات', value: summary.info_count, color: '#3b82f6' }
+    { name: 'Critical', value: summary.critical_count, color: '#ef4444' },
+    { name: 'Warning', value: summary.warning_count, color: '#f97316' },
+    { name: 'Info', value: summary.info_count, color: '#3b82f6' }
   ]
 
   const branchData = [
-    { branch: 'شعبه مرکزی', alerts: 2 },
-    { branch: 'شعبه شمالی', alerts: 1 },
-    { branch: 'شعبه جنوبی', alerts: 1 },
-    { branch: 'شعبه شرقی', alerts: 1 }
+    { branch: 'Main Branch', alerts: 2 },
+    { branch: 'North Branch', alerts: 1 },
+    { branch: 'South Branch', alerts: 1 },
+    { branch: 'East Branch', alerts: 1 }
   ]
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <RefreshCw className="h-8 w-8 animate-spin text-blue-600" />
-        <span className="mr-2 text-gray-600">در حال بارگذاری هشدارها...</span>
+        <span className="mr-2 text-gray-600">Loading alerts...</span>
       </div>
     )
   }
@@ -241,12 +241,12 @@ export default function AlertsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">پایش هشدارها</h1>
-          <p className="text-gray-600 mt-1">مدیریت و پیگیری هشدارهای سیستم زنجیره تأمین</p>
+          <h1 className="text-3xl font-bold text-gray-900">Alerts Monitoring</h1>
+          <p className="text-gray-600 mt-1">Manage and track supply chain system alerts</p>
         </div>
         <Button onClick={loadAlerts}>
           <RefreshCw className="h-4 w-4 ml-2" />
-          بروزرسانی
+          Refresh
         </Button>
       </div>
 
@@ -254,45 +254,45 @@ export default function AlertsPage() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">کل هشدارها</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Alerts</CardTitle>
             <AlertTriangle className="h-4 w-4 text-gray-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-gray-900">{summary.total_alerts}</div>
-            <p className="text-xs text-gray-500 mt-1">هشدار فعال</p>
+            <p className="text-xs text-gray-500 mt-1">Active alerts</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">بحرانی</CardTitle>
+            <CardTitle className="text-sm font-medium">Critical</CardTitle>
             <AlertTriangle className="h-4 w-4 text-red-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-red-600">{summary.critical_count}</div>
-            <p className="text-xs text-gray-500 mt-1">نیاز به اقدام فوری</p>
+            <p className="text-xs text-gray-500 mt-1">Requires immediate action</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">هشدار</CardTitle>
+            <CardTitle className="text-sm font-medium">Warning</CardTitle>
             <AlertCircle className="h-4 w-4 text-orange-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-orange-600">{summary.warning_count}</div>
-            <p className="text-xs text-gray-500 mt-1">نیاز به توجه</p>
+            <p className="text-xs text-gray-500 mt-1">Requires attention</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">اطلاعات</CardTitle>
+            <CardTitle className="text-sm font-medium">Info</CardTitle>
             <Bell className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-blue-600">{summary.info_count}</div>
-            <p className="text-xs text-gray-500 mt-1">اطلاعات سیستمی</p>
+            <p className="text-xs text-gray-500 mt-1">System information</p>
           </CardContent>
         </Card>
       </div>
@@ -301,7 +301,7 @@ export default function AlertsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>توزیع هشدارها بر اساس شدت</CardTitle>
+            <CardTitle>Alerts Distribution by Severity</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="h-64">
@@ -328,7 +328,7 @@ export default function AlertsPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>هشدارها بر اساس شعبه</CardTitle>
+            <CardTitle>Alerts by Branch</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="h-64">
@@ -349,12 +349,12 @@ export default function AlertsPage() {
       {/* AI Insights */}
       <Card>
         <CardHeader>
-          <CardTitle>تحلیل هوشمند هشدارها</CardTitle>
-          <CardDescription>خلاصه توصیه‌های مدل زبانی بر اساس هشدارهای فعلی</CardDescription>
+          <CardTitle>AI Alerts Analysis</CardTitle>
+          <CardDescription>Summary of language model recommendations based on current alerts</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-sm leading-6 text-gray-800 whitespace-pre-wrap">
-            {aiInsights || 'تحلیل هوشمند در دسترس نیست'}
+            {aiInsights || 'AI analysis not available'}
           </div>
         </CardContent>
       </Card>
@@ -362,7 +362,7 @@ export default function AlertsPage() {
       {/* Filters */}
       <Card>
         <CardHeader>
-          <CardTitle>فیلتر هشدارها</CardTitle>
+          <CardTitle>Filter Alerts</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col md:flex-row gap-4">
@@ -371,7 +371,7 @@ export default function AlertsPage() {
                 <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input
                   type="text"
-                  placeholder="جستجو در هشدارها..."
+                  placeholder="Search alerts..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-4 pr-10"
@@ -380,13 +380,13 @@ export default function AlertsPage() {
             </div>
             <Select value={severityFilter} onValueChange={setSeverityFilter}>
               <SelectTrigger className="w-48">
-                <SelectValue placeholder="فیلتر شدت" />
+                <SelectValue placeholder="Filter by severity" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">همه هشدارها</SelectItem>
-                <SelectItem value="CRITICAL">بحرانی</SelectItem>
-                <SelectItem value="WARNING">هشدار</SelectItem>
-                <SelectItem value="INFO">اطلاعات</SelectItem>
+                <SelectItem value="all">All Alerts</SelectItem>
+                <SelectItem value="CRITICAL">Critical</SelectItem>
+                <SelectItem value="WARNING">Warning</SelectItem>
+                <SelectItem value="INFO">Info</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -396,9 +396,9 @@ export default function AlertsPage() {
       {/* Alerts List */}
       <Card>
         <CardHeader>
-          <CardTitle>لیست هشدارها</CardTitle>
+          <CardTitle>Alerts List</CardTitle>
           <CardDescription>
-            {filteredAlerts.length} هشدار از {alerts.length} هشدار کل
+            {filteredAlerts.length} of {alerts.length} total alerts
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -411,15 +411,15 @@ export default function AlertsPage() {
                 }`}
               >
                 <div className="flex items-start justify-between">
-                  <div className="flex items-start space-x-3 space-x-reverse">
+                  <div className="flex items-start space-x-3">
                     <div className={`p-2 rounded-full ${getSeverityColor(alert.severity)}`}>
                       {getSeverityIcon(alert.severity)}
                     </div>
                     <div className="flex-1">
-                      <div className="flex items-center space-x-2 space-x-reverse mb-2">
+                      <div className="flex items-center space-x-2 mb-2">
                         <Badge variant="outline" className={getSeverityColor(alert.severity)}>
-                          {alert.severity === 'CRITICAL' ? 'بحرانی' :
-                           alert.severity === 'WARNING' ? 'هشدار' : 'اطلاعات'}
+                          {alert.severity === 'CRITICAL' ? 'Critical' :
+                           alert.severity === 'WARNING' ? 'Warning' : 'Info'}
                         </Badge>
                         <Badge variant="secondary">{alert.branch_id}</Badge>
                         <Badge variant="secondary">{alert.item_id}</Badge>
@@ -432,22 +432,22 @@ export default function AlertsPage() {
 
                       {alert.recommended_action && (
                         <p className="text-sm text-blue-600 mb-2">
-                          اقدام پیشنهادی: {alert.recommended_action}
+                          Recommended Action: {alert.recommended_action}
                         </p>
                       )}
 
                       {alert.current_stock && (
-                        <div className="flex items-center space-x-4 space-x-reverse text-sm text-gray-600">
-                          <span>موجودی فعلی: {alert.current_stock}</span>
+                        <div className="flex items-center space-x-4 text-sm text-gray-600">
+                          <span>Current Stock: {alert.current_stock}</span>
                           {alert.days_until_stockout && (
-                            <span>روز تا کمبود: {alert.days_until_stockout}</span>
+                            <span>Days Until Stockout: {alert.days_until_stockout}</span>
                           )}
                         </div>
                       )}
 
                       <div className="flex items-center text-xs text-gray-500 mt-2">
                         <Clock className="h-3 w-3 ml-1" />
-                        {new Date(alert.timestamp).toLocaleString('fa-IR')}
+                        {new Date(alert.timestamp).toLocaleString('en-US')}
                       </div>
                     </div>
                   </div>
@@ -460,14 +460,14 @@ export default function AlertsPage() {
                       className="flex items-center"
                     >
                       <CheckCircle className="h-4 w-4 ml-1" />
-                      حل شد
+                      Resolve
                     </Button>
                   )}
 
                   {alert.is_resolved && (
                     <Badge variant="secondary" className="bg-green-100 text-green-800">
                       <CheckCircle className="h-3 w-3 ml-1" />
-                      حل شده
+                      Resolved
                     </Badge>
                   )}
                 </div>
@@ -476,7 +476,7 @@ export default function AlertsPage() {
 
             {filteredAlerts.length === 0 && (
               <div className="text-center py-8 text-gray-500">
-                هیچ هشداری یافت نشد
+                No alerts found
               </div>
             )}
           </div>

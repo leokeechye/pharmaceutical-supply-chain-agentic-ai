@@ -75,33 +75,33 @@ export default function Dashboard() {
 
   const kpiCards = [
     {
-      title: 'دقت پیش‌بینی',
+      title: 'Forecast Accuracy',
       value: `${metrics.total_forecast_accuracy}%`,
-      description: 'دقت مدل‌های پیش‌بینی تقاضا',
+      description: 'Accuracy of demand forecasting models',
       icon: TrendingUp,
       color: 'text-green-600',
       bgColor: 'bg-green-50'
     },
     {
-      title: 'چرخش موجودی',
+      title: 'Inventory Turnover',
       value: `${metrics.inventory_turnover}`,
-      description: 'دفعات چرخش موجودی در سال',
+      description: 'Inventory turnover cycles per year',
       icon: Package,
       color: 'text-blue-600',
       bgColor: 'bg-blue-50'
     },
     {
-      title: 'تحویل به موقع',
+      title: 'On-Time Delivery',
       value: `${metrics.delivery_on_time}%`,
-      description: 'درصد تحویل‌های به موقع',
+      description: 'Percentage of on-time deliveries',
       icon: Truck,
       color: 'text-purple-600',
       bgColor: 'bg-purple-50'
     },
     {
-      title: 'کاهش کمبود',
+      title: 'Stockout Reduction',
       value: `${metrics.stockout_reduction}%`,
-      description: 'کاهش موارد کمبود موجودی',
+      description: 'Reduction in inventory stockout incidents',
       icon: CheckCircle,
       color: 'text-emerald-600',
       bgColor: 'bg-emerald-50'
@@ -111,24 +111,24 @@ export default function Dashboard() {
   const alerts = [
     {
       type: 'critical',
-      title: 'کمبود موجودی اورژانسی',
-      message: 'داروی متفورمین در شعبه مرکزی کمتر از ۲ روز موجودی دارد',
-      time: '۱۰ دقیقه پیش',
-      branch: 'شعبه مرکزی'
+      title: 'Emergency Stock Shortage',
+      message: 'Metformin at the Central Branch has less than 2 days of stock remaining',
+      time: '10 minutes ago',
+      branch: 'Central Branch'
     },
     {
       type: 'warning',
-      title: 'تأخیر در تحویل',
-      message: 'مسیر تحویل به شعبه شمالی ۲ ساعت تأخیر دارد',
-      time: '۳۰ دقیقه پیش',
-      branch: 'شعبه شمالی'
+      title: 'Delivery Delay',
+      message: 'The delivery route to the Northern Branch is delayed by 2 hours',
+      time: '30 minutes ago',
+      branch: 'Northern Branch'
     },
     {
       type: 'info',
-      title: 'پیش‌بینی تقاضا تکمیل شد',
-      message: 'پیش‌بینی تقاضای ماه آینده برای ۵۰ دارو محاسبه شد',
-      time: '۱ ساعت پیش',
-      branch: 'سیستم'
+      title: 'Demand Forecast Completed',
+      message: 'Next month\'s demand forecast was calculated for 50 drugs',
+      time: '1 hour ago',
+      branch: 'System'
     }
   ]
 
@@ -136,7 +136,7 @@ export default function Dashboard() {
     return (
       <div className="flex items-center justify-center h-64">
         <RefreshCw className="h-8 w-8 animate-spin text-blue-600" />
-        <span className="mr-2 text-gray-600">در حال بارگذاری...</span>
+        <span className="mr-2 text-gray-600">Loading...</span>
       </div>
     )
   }
@@ -146,16 +146,16 @@ export default function Dashboard() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">داشبورد مدیریت زنجیره تأمین</h1>
-          <p className="text-gray-700 mt-1">نمای کلی عملکرد سیستم هوش مصنوعی</p>
+          <h1 className="text-3xl font-bold text-gray-900">Supply Chain Management Dashboard</h1>
+          <p className="text-gray-700 mt-1">Overview of AI system performance</p>
         </div>
-        <div className="flex items-center space-x-3 space-x-reverse">
+        <div className="flex items-center space-x-3">
           <Badge variant={metrics.system_health === 'healthy' ? 'default' : 'destructive'}>
-            سیستم {metrics.system_health === 'healthy' ? 'سالم' : 'نیاز به بررسی'}
+            System {metrics.system_health === 'healthy' ? 'Healthy' : 'Needs Attention'}
           </Badge>
           <Button>
             <RefreshCw className="h-4 w-4 ml-2" />
-            بروزرسانی
+            Refresh
           </Button>
         </div>
       </div>
@@ -190,18 +190,18 @@ export default function Dashboard() {
           <CardHeader>
             <CardTitle className="flex items-center">
               <DollarSign className="h-5 w-5 ml-2 text-green-600" />
-              پس‌انداز هزینه‌ای
+              Cost Savings
             </CardTitle>
             <CardDescription>
-              صرفه‌جویی حاصل از بهینه‌سازی‌های هوش مصنوعی
+              Savings achieved through AI-driven optimizations
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-green-600 mb-2">
-              {metrics.cost_savings.toLocaleString()} تومان
+              {metrics.cost_savings.toLocaleString()} Toman
             </div>
             <div className="text-sm text-gray-600">
-              در مقایسه با روش‌های سنتی
+              Compared to traditional methods
             </div>
           </CardContent>
         </Card>
@@ -211,25 +211,25 @@ export default function Dashboard() {
           <CardHeader>
             <CardTitle className="flex items-center">
               <AlertTriangle className="h-5 w-5 ml-2 text-orange-600" />
-              خلاصه هشدارها
+              Alerts Summary
             </CardTitle>
             <CardDescription>
-              وضعیت فعلی هشدارهای سیستم
+              Current status of system alerts
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex items-center justify-between mb-4">
               <div className="text-center">
                 <div className="text-2xl font-bold text-red-600">{metrics.alerts_critical}</div>
-                <div className="text-sm text-gray-600">بحرانی</div>
+                <div className="text-sm text-gray-600">Critical</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-orange-600">{metrics.alerts_warning}</div>
-                <div className="text-sm text-gray-600">هشدار</div>
+                <div className="text-sm text-gray-600">Warning</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-blue-600">0</div>
-                <div className="text-sm text-gray-600">اطلاعات</div>
+                <div className="text-sm text-gray-600">Info</div>
               </div>
             </div>
           </CardContent>
@@ -239,15 +239,15 @@ export default function Dashboard() {
       {/* Recent Alerts */}
       <Card>
         <CardHeader>
-          <CardTitle>هشدارهای اخیر</CardTitle>
+          <CardTitle>Recent Alerts</CardTitle>
           <CardDescription>
-            آخرین فعالیت‌ها و هشدارهای سیستم
+            Latest system activities and alerts
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             {alerts.map((alert, index) => (
-              <div key={index} className="flex items-start space-x-3 space-x-reverse p-3 rounded-lg border border-gray-200 hover:bg-gray-50">
+              <div key={index} className="flex items-start space-x-3 p-3 rounded-lg border border-gray-200 hover:bg-gray-50">
                 <div className={`p-1 rounded-full ${
                   alert.type === 'critical' ? 'bg-red-100' :
                   alert.type === 'warning' ? 'bg-orange-100' : 'bg-blue-100'
