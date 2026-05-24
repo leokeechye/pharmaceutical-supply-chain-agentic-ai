@@ -18,10 +18,14 @@ scikit-learn
 pandas
 numpy
 
-# Deep Learning (for LSTM)
-tensorflow
-torch
-torchvision
+# Deep Learning (for the OPTIONAL LSTM forecasting path)
+# Commented out for deployment: these add multiple GB to the image and risk
+# OOM on Railway. The forecasting agent defaults to Prophet and degrades
+# gracefully when these are absent (LSTM_AVAILABLE=False). Uncomment to enable
+# the `model=lstm` option locally.
+# tensorflow
+# torch
+# torchvision
 
 # Optimization
 ortools
@@ -41,10 +45,11 @@ pytest-asyncio
 black
 mypy
 
-# UI (for future development)
-streamlit
-plotly
-dash
+# UI (for future development) — not used by the FastAPI backend; excluded from
+# the deploy image to keep it lean. Uncomment if you build the Streamlit/Dash UI.
+# streamlit
+# plotly
+# dash
 
 # Logging & Monitoring
 loguru

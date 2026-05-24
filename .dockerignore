@@ -1,0 +1,17 @@
+# Backend build context — keep the image lean.
+.git
+.venv
+venv
+__pycache__
+**/__pycache__
+*.pyc
+.env
+.env.*
+# The frontend is a separate Railway service with its own build.
+frontend
+# Local data + the multi-MB dashboard screenshots are not needed at runtime.
+data
+*.png
+*.zip
+# Docs
+PRD_AgenticAI_PakhshMomtaz.md
